@@ -1,1 +1,6 @@
 version with new file creation
+
+ * CHANGES 12/26/15: files now save directly to the users home folder
+ * non functioning save as menu added
+ * fixed unsupported encoding exception issue
+ * if the user doesn't create a file initially then the program exits itself
