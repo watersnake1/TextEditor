@@ -8,11 +8,7 @@ public class MainRunnable implements Runnable, Globals {
     @Override
     public void run() {
         View window = new View();
-        try {
-            window.createAndShowGUI();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        window.createAndShowGUI();
         window.buttonHandler();
     }
 

@@ -4,3 +4,9 @@ version with new file creation
  * non functioning save as menu added
  * fixed unsupported encoding exception issue
  * if the user doesn't create a file initially then the program exits itself
+
+ * CHANGES 1/18/16: the open menu now works
+ * files can be opened
+ * it can read the text of the file and print it to the text field
+ * still cannot read the first line of a file
+ * save buttons and the new file buttons still need some work
