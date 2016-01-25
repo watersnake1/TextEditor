@@ -3,10 +3,10 @@
  */
 import javax.swing.*;
 
-public class LoadingScreen implements Runnable{
+public class LoadingScreen implements Runnable, Globals {
     @Override
     public void run() {
-
+        showLoadingUI();
     }
 
     public static void main(String[] args) {
@@ -15,7 +15,14 @@ public class LoadingScreen implements Runnable{
     }
 
     public static showLoadingUI() {
-        JFrame frame = new JFrame("loading");
+        loadingSplash();
+        Thread.sleep(1000);
+        startSignal = true;
 
+    }
+
+    public void loadingSplash() {
+        //some splash screen image code here
+        //should include a label that goes . , .. , ... , and then back again
     }
 }
