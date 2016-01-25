@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /**
  * Created by cmurray17 on 10/2/15.
@@ -32,6 +34,10 @@ public class View implements Globals {
     private File selectedFile;
     private File fileToWrite;
 
+    
+    /**
+    * create the View object and initialize everything that is needed
+    */
     public View() {
         window = new JFrame("Text Edit");
         panel = new JPanel();
@@ -51,6 +57,10 @@ public class View implements Globals {
 
     }
 
+    /**
+     * if the dialogue method is ready then proceed with the process of 
+     * creating the window that will take in the text input
+     */
     public void createAndShowGUI()  {
         if(showDialogue()) {
             window.setTitle("Text Edit ~ " + fileName);
@@ -105,11 +115,48 @@ public class View implements Globals {
 
     }
 
+    /**
+     * reads the text file line by line and then prints each line to the text field
+     * currently does not read the first line and inserts 'null' to the end of the arraylist
+     */
     public void getSelectedFileText() {
-
+        try {
+            String line = "";
+            ArrayList<String> fullText = new ArrayList<String>();
+            FileReader reader = new FileReader(selectedFile);
+            BufferedReader opener = new BufferedReader(reader);
+            line = opener.readLine();
+            while(line != null) {
+                line = opener.readLine();
+                fullText.add(line);
+                //System.out.println(line);
+            }
+            opener.close();
+            //System.out.println(fullText);
+            for(String s: fullText) {
+                textArea.setText(textArea.getText() + s + "\n");
+                System.out.println(s);
+            }
+            textArea.repaint();
+            panel.updateUI();
+        }
+        catch(java.io.FileNotFoundException error) {
+            System.out.println("there was a file not found exception. Heres the details:");
+            error.printStackTrace();
+        }
+        catch(java.io.IOException error1) {
+            error1.printStackTrace();
+        }
     }
 
-    //all the action listeners. java 1-6 compatible
+    /**
+     * the method that is called when the open button is clicked
+     */
+    public void recreateAndShowGUI() {
+        window.setTitle("Text Edit ~ " + fileName);
+        getSelectedFileText();
+    }
+    //all the action listeners. java 1-6 compatible, no lamda //expressions
 
     public void buttonHandler() {
         save.addActionListener(new ActionListener() {
@@ -159,7 +206,7 @@ public class View implements Globals {
                 if(result == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fileChooser.getSelectedFile();
                     fileName = selectedFile.getName();
-                    createAndShowGUI();
+                    recreateAndShowGUI();
                 }
             }
         });
