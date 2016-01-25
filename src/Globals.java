@@ -4,6 +4,7 @@
 import javax.swing.*;
 public interface Globals {
     public String nameFile = null;
+    boolean startSignal = false;
 
 
 }

@@ -8,16 +8,13 @@ public class MainRunnable implements Runnable, Globals {
     @Override
     public void run() {
         View window = new View();
-        try {
-            window.createAndShowGUI();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        window.createAndShowGUI();
         window.buttonHandler();
     }
 
     public static void main(String[] args) {
         Thread textEdit = new Thread(new MainRunnable());
-        textEdit.start();
+        if(startSignal)
+            textEdit.start();
     }
 }
