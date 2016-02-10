@@ -10,3 +10,7 @@ version with new file creation
  * it can read the text of the file and print it to the text field
  * still cannot read the first line of a file
  * save buttons and the new file buttons still need some work
+
+ * CHANGES 2/9/16
+ * some bugs fixed
+

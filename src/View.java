@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.stream.Stream;
+import java.net.*;
+
 
 /**
  * Created by cmurray17 on 10/2/15.
@@ -19,6 +20,7 @@ public class View implements Globals {
     private JMenu fileMenu;
     private JMenu editMenu;
     private JMenu codeMenu;
+    private JMenu changesMenu;
     private JMenuItem save;
     private JMenuItem clear;
     private JMenuItem newFile;
@@ -26,6 +28,8 @@ public class View implements Globals {
     private JMenuItem saveAs;
     private JMenuItem undo;
     private JMenuItem createSource;
+    private JMenuItem about;
+    private JMenuItem changelog;
     private JTextArea textArea;
     private String recievedText;
     private String fileName;
@@ -33,6 +37,7 @@ public class View implements Globals {
     private String autoSave;
     private File selectedFile;
     private File fileToWrite;
+    private String aboutText;
 
     
     /**
@@ -45,13 +50,17 @@ public class View implements Globals {
         fileMenu = new JMenu("file");
         editMenu = new JMenu("edit");
         codeMenu = new JMenu("code");
+        changesMenu = new JMenu("changes");
         save = new JMenuItem("save");
         newFile = new JMenuItem("new");
         open = new JMenuItem("open");
         saveAs = new JMenuItem("Save As");
         clear = new JMenuItem("clear");
         undo = new JMenuItem("undo");
+        about = new JMenuItem("about");
+        changelog = new JMenuItem("changelog");
         createSource = new JMenuItem("make '.java' file");
+        aboutText = "A java text editor created by Christian Murray";
         textArea = new JTextArea();
 
 
@@ -75,13 +84,16 @@ public class View implements Globals {
             menuBar.add(fileMenu);
             menuBar.add(editMenu);
             menuBar.add(codeMenu);
+            menuBar.add(changesMenu);
             fileMenu.add(save);
             fileMenu.add(clear);
             fileMenu.add(newFile);
             fileMenu.add(open);
             fileMenu.add(saveAs);
+            fileMenu.add(about);
             editMenu.add(undo);
             codeMenu.add(createSource);
+            changesMenu.add(changelog);
             window.pack();
         }
         else {
@@ -107,7 +119,7 @@ public class View implements Globals {
         }
         catch (FileNotFoundException error){
             JOptionPane.showMessageDialog(window, "No file name provided");
-            error.printStackTrace();
+            //error.printStackTrace();
             //window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             window.dispose();
         }
@@ -141,7 +153,7 @@ public class View implements Globals {
             panel.updateUI();
         }
         catch(java.io.FileNotFoundException error) {
-            System.out.println("there was a file not found exception. Heres the details:");
+            System.out.println("there was a file not found exception. Here's the details:");
             error.printStackTrace();
         }
         catch(java.io.IOException error1) {
@@ -155,6 +167,10 @@ public class View implements Globals {
     public void recreateAndShowGUI() {
         window.setTitle("Text Edit ~ " + fileName);
         getSelectedFileText();
+    }
+
+    public String getAboutText() {
+        return aboutText;
     }
     //all the action listeners. java 1-6 compatible, no lamda //expressions
 
@@ -233,6 +249,45 @@ public class View implements Globals {
                 String newFileName = noFileType + ".java";
                 File sourceFile = new File(System.getProperty("user.home"), newFileName);
                 fileToWrite.renameTo(sourceFile);
+            }
+        });
+
+        about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFrame aboutFrame = new JFrame("About TextEditor");
+                JPanel aboutPanel = new JPanel();
+                JLabel aboutLabel = new JLabel(getAboutText());
+                aboutFrame.setVisible(true);
+                aboutFrame.setPreferredSize(new Dimension(400, 100));
+                aboutFrame.setResizable(false);
+                aboutFrame.add(aboutPanel);
+                aboutPanel.add(aboutLabel);
+                aboutFrame.pack();
+
+            }
+        });
+
+        //this doesnt work, trying to use update.txt as an in app changelog
+        changelog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                URL fileURL = null;
+                try {
+                    fileURL = new URL("../update/");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                String directory = fileURL.getPath();
+                try {
+                    directory = URLDecoder.decode(directory, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                File update = new File(directory);
+
+                fileName = update.getName();
+                recreateAndShowGUI();
             }
         });
     }

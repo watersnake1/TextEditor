@@ -14,7 +14,6 @@ public class MainRunnable implements Runnable, Globals {
 
     public static void main(String[] args) {
         Thread textEdit = new Thread(new MainRunnable());
-        if(startSignal)
-            textEdit.start();
+        textEdit.start();
     }
 }
